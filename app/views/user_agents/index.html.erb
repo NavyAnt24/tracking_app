@@ -1,0 +1,50 @@
+<p id="notice"><%= notice %></p>
+
+<h1>User Agents</h1>
+
+<button class="update-table-btn">Update Table</button>
+
+<table>
+  <thead>
+    <tr>
+      <th>Counter</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @user_agents.each do |user_agent| %>
+      <tr>
+        <td><%= user_agent.counter %></td>
+        <td><%= user_agent.user_agent_string %></td>
+        <td><%= link_to 'Show', user_agent %></td>
+        <td><%= link_to 'Edit', edit_user_agent_path(user_agent) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<script>
+  $(document).ready(function () {
+    $('.update-table-btn').click(function () {
+      $.ajax({
+        url: '/user_agents',
+        dataType: 'json',
+        success: function (data) {
+          var $tbody = $('table tbody');
+          $tbody.find('tr').remove();
+
+          $.each(data, function (index, userAgent) {
+            $tbody.append('<tr><td>' + userAgent.counter +
+              '</td><td>' + userAgent.user_agent_string +
+              '</td><td><a href="/users/' + userAgent.id +
+              '">Show</a></td><td><a href="/users/' + userAgent.id + '/edit">Edit</a>'
+            )
+          });
+        }
+      });
+    });
+  });
+</script>
